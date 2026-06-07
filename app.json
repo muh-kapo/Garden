@@ -1,0 +1,20 @@
+{
+  "name": "Garden",
+  "shopName": "Tulip",
+  "stage": "mvp-0",
+  "deployment": {
+    "target": "vercel",
+    "database": "local-browser-storage",
+    "supabase": false
+  },
+  "modules": [
+    "dashboard",
+    "inventory",
+    "rentals",
+    "sales",
+    "customers",
+    "accounting-lite",
+    "staff-tasks",
+    "buying-list"
+  ]
+}

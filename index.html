@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Garden | Tulip Operations</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Garden navigation">
+        <div class="brand">
+          <span class="brand-mark">G</span>
+          <div>
+            <strong>Garden</strong>
+            <span>Tulip daily system</span>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Primary">
+          <button class="nav-item is-active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item" data-view="inventory">Inventory</button>
+          <button class="nav-item" data-view="rentals">Rentals</button>
+          <button class="nav-item" data-view="sales">Sales</button>
+          <button class="nav-item" data-view="customers">Customers</button>
+          <button class="nav-item" data-view="accounting">Accounting</button>
+          <button class="nav-item" data-view="tasks">Staff tasks</button>
+          <button class="nav-item" data-view="buying">Buying list</button>
+        </nav>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Prototype workspace</p>
+            <h1 id="view-title">Dashboard</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="ghost-button" id="seed-data-button">Reset demo data</button>
+            <button class="primary-button" id="quick-action-button">Add stock item</button>
+          </div>
+        </header>
+
+        <section class="status-strip" aria-label="Daily summary">
+          <article>
+            <span>Available</span>
+            <strong id="available-count">0</strong>
+          </article>
+          <article>
+            <span>Rented now</span>
+            <strong id="rented-count">0</strong>
+          </article>
+          <article>
+            <span>Today returns</span>
+            <strong id="returns-count">0</strong>
+          </article>
+          <article>
+            <span>Pending balance</span>
+            <strong id="pending-balance">AED 0</strong>
+          </article>
+        </section>
+
+        <section class="view is-active" id="dashboard-view" data-view-panel="dashboard">
+          <div class="split-layout">
+            <section class="panel wide-panel">
+              <div class="section-heading">
+                <div>
+                  <h2>Today at Tulip</h2>
+                  <p>Operational work that needs attention today.</p>
+                </div>
+              </div>
+              <div class="timeline" id="today-timeline"></div>
+            </section>
+
+            <section class="panel">
+              <div class="section-heading">
+                <div>
+                  <h2>Stock health</h2>
+                  <p>Items that may block rentals or sales.</p>
+                </div>
+              </div>
+              <div class="compact-list" id="stock-health-list"></div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <h2>Recent activity</h2>
+                <p>Latest stock, rental, sale, and payment movement.</p>
+              </div>
+            </div>
+            <div class="activity-grid" id="activity-grid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="inventory-view" data-view-panel="inventory">
+          <div class="tool-row">
+            <label class="search-box">
+              <span>Search inventory</span>
+              <input id="inventory-search" type="search" placeholder="Code, name, color, size, location" />
+            </label>
+            <label class="filter-box">
+              <span>Status</span>
+              <select id="inventory-status-filter">
+                <option value="all">All statuses</option>
+                <option value="Available">Available</option>
+                <option value="Reserved">Reserved</option>
+                <option value="Rented">Rented</option>
+                <option value="Sold">Sold</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Damaged">Damaged</option>
+                <option value="Alteration">Alteration</option>
+              </select>
+            </label>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Item</th>
+                  <th>Size</th>
+                  <th>Color</th>
+                  <th>Status</th>
+                  <th>Location</th>
+                  <th>Rental</th>
+                  <th>Sale</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="view" id="rentals-view" data-view-panel="rentals">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Item</th>
+                  <th>Pickup</th>
+                  <th>Return</th>
+                  <th>Status</th>
+                  <th>Paid</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody id="rentals-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="view" id="sales-view" data-view-panel="sales">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Item</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Paid</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody id="sales-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="view" id="customers-view" data-view-panel="customers">
+          <div class="directory-grid" id="customer-grid"></div>
+        </section>
+
+        <section class="view" id="accounting-view" data-view-panel="accounting">
+          <div class="report-grid" id="accounting-grid"></div>
+        </section>
+
+        <section class="view" id="tasks-view" data-view-panel="tasks">
+          <div class="kanban" id="task-board"></div>
+        </section>
+
+        <section class="view" id="buying-view" data-view-panel="buying">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Need</th>
+                  <th>Reason</th>
+                  <th>Priority</th>
+                  <th>Estimate</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="buying-table"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="item-dialog" aria-labelledby="item-dialog-title">
+      <form method="dialog" class="dialog-card" id="item-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Inventory</p>
+            <h2 id="item-dialog-title">Add stock item</h2>
+          </div>
+          <button class="icon-button" value="cancel" aria-label="Close dialog">x</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Item name
+            <input name="name" required placeholder="Pearl bridal gown" />
+          </label>
+          <label>
+            Category
+            <select name="category" required>
+              <option>Wedding dress</option>
+              <option>Evening dress</option>
+              <option>Accessory</option>
+              <option>Veil</option>
+              <option>Shoes</option>
+            </select>
+          </label>
+          <label>
+            Size
+            <input name="size" required placeholder="M" />
+          </label>
+          <label>
+            Color
+            <input name="color" required placeholder="Ivory" />
+          </label>
+          <label>
+            Storage location
+            <input name="location" required placeholder="Rack A / Shelf 2" />
+          </label>
+          <label>
+            Status
+            <select name="status">
+              <option>Available</option>
+              <option>Reserved</option>
+              <option>Rented</option>
+              <option>Cleaning</option>
+              <option>Alteration</option>
+              <option>Damaged</option>
+            </select>
+          </label>
+          <label>
+            Rental price
+            <input name="rentalPrice" type="number" min="0" step="50" required placeholder="1800" />
+          </label>
+          <label>
+            Sale price
+            <input name="salePrice" type="number" min="0" step="50" required placeholder="6500" />
+          </label>
+        </div>
+
+        <label>
+          Notes
+          <textarea name="notes" rows="3" placeholder="Condition, alteration, or buying notes"></textarea>
+        </label>
+
+        <menu class="dialog-actions">
+          <button class="ghost-button" value="cancel">Cancel</button>
+          <button class="primary-button" value="default">Save item</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
