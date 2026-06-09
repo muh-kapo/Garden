@@ -98,7 +98,7 @@
           <div class="tool-row">
             <label class="search-box">
               <span>Search inventory</span>
-              <input id="inventory-search" type="search" placeholder="Code, name, color, size, location" />
+              <input id="inventory-search" type="search" placeholder="Code, name, color, size, location, fabric" />
             </label>
             <label class="filter-box">
               <span>Status</span>
@@ -118,14 +118,19 @@
             <table>
               <thead>
                 <tr>
-                  <th>Code</th>
-                  <th>Item</th>
-                  <th>Size</th>
-                  <th>Color</th>
-                  <th>Status</th>
-                  <th>Location</th>
-                  <th>Rental</th>
-                  <th>Sale</th>
+                <tr>
+                <th>Code</th>
+                <th>Item</th>
+                <th>Size</th>
+                <th>Color</th>
+                <th>Status</th>
+                <th>Location</th>
+                <th>Rental</th>
+                <th>Insurance</th>
+                <th>First rental</th>
+                <th>Fabric</th>
+                <th>Sale</th>
+                </tr>
                 </tr>
               </thead>
               <tbody id="inventory-table"></tbody>
@@ -134,18 +139,23 @@
         </section>
 
         <section class="view" id="rentals-view" data-view-panel="rentals">
+          <div class="tool-row">
+  <button class="primary-button" id="add-rental-button">Add rental</button>
+</div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Customer</th>
-                  <th>Item</th>
-                  <th>Pickup</th>
-                  <th>Return</th>
-                  <th>Status</th>
-                  <th>Paid</th>
-                  <th>Balance</th>
-                </tr>
+  <th>Customer</th>
+  <th>Item</th>
+  <th>Pickup</th>
+  <th>Return</th>
+  <th>Status</th>
+  <th>Insurance</th>
+  <th>Payment method</th>
+  <th>Paid</th>
+  <th>Balance</th>
+</tr>
               </thead>
               <tbody id="rentals-table"></tbody>
             </table>
@@ -158,11 +168,13 @@
               <thead>
                 <tr>
                   <th>Customer</th>
-                  <th>Item</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Paid</th>
-                  <th>Balance</th>
+<th>Item</th>
+<th>Date</th>
+<th>Status</th>
+<th>Payment Method</th>
+<th>Accessories</th>
+<th>Paid</th>
+<th>Balance</th>
                 </tr>
               </thead>
               <tbody id="sales-table"></tbody>
@@ -187,11 +199,16 @@
             <table>
               <thead>
                 <tr>
-                  <th>Need</th>
-                  <th>Reason</th>
-                  <th>Priority</th>
-                  <th>Estimate</th>
-                  <th>Status</th>
+                  <tr>
+  <th>Need</th>
+  <th>Quantity</th>
+  <th>Reason</th>
+  <th>Priority</th>
+  <th>Estimate</th>
+  <th>Responsible</th>
+  <th>Purchase status</th>
+  <th>Purchase date</th>
+</tr>
                 </tr>
               </thead>
               <tbody id="buying-table"></tbody>
@@ -208,7 +225,7 @@
             <p class="eyebrow">Inventory</p>
             <h2 id="item-dialog-title">Add stock item</h2>
           </div>
-          <button class="icon-button" value="cancel" aria-label="Close dialog">x</button>
+          <button class="icon-button" type="button" id="close-item-dialog" aria-label="Close dialog">x</button>
         </div>
 
         <div class="form-grid">
@@ -227,8 +244,12 @@
             </select>
           </label>
           <label>
-            Size
-            <input name="size" required placeholder="M" />
+           Size
+           <select name="size" required>
+            <option>Regular</option>
+            <option>Curvy</option>
+            <option>Overweight</option>
+           </select>
           </label>
           <label>
             Color
@@ -254,6 +275,29 @@
             <input name="rentalPrice" type="number" min="0" step="50" required placeholder="1800" />
           </label>
           <label>
+  Insurance / deposit
+  <input name="insuranceAmount" type="number" min="0" step="50" required placeholder="1000" />
+</label>
+<label>
+  First rental
+  <select name="isFirstRental" required>
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+  </select>
+</label>
+<label>
+  Fabric type
+  <input name="fabricType" required placeholder="Satin, lace, tulle" />
+</label>
+<label>
+  Fabric place / source
+  <input name="fabricSource" required placeholder="Shop, supplier, storage room" />
+</label>
+<label>
+  Fabric meters
+  <input name="fabricMeters" type="number" min="0" step="0.5" required placeholder="6" />
+</label>
+          <label>
             Sale price
             <input name="salePrice" type="number" min="0" step="50" required placeholder="6500" />
           </label>
@@ -265,11 +309,83 @@
         </label>
 
         <menu class="dialog-actions">
-          <button class="ghost-button" value="cancel">Cancel</button>
+          <button class="ghost-button" type="button" id="cancel-item-dialog">Cancel</button>
           <button class="primary-button" value="default">Save item</button>
         </menu>
       </form>
     </dialog>
+
+    <dialog id="rental-dialog" aria-labelledby="rental-dialog-title">
+  <form method="dialog" class="dialog-card" id="rental-form">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">Rentals</p>
+        <h2 id="rental-dialog-title">Add rental</h2>
+      </div>
+      <button class="icon-button" type="button" id="close-rental-dialog" aria-label="Close dialog">x</button>
+    </div>
+
+    <div class="form-grid">
+      <label>
+        Customer
+        <select name="customer" id="rental-customer" required></select>
+      </label>
+
+      <label>
+        Item
+        <select name="itemCode" id="rental-item" required></select>
+      </label>
+
+      <label>
+        Pickup date
+        <input name="pickup" type="date" required />
+      </label>
+
+      <label>
+        Return date
+        <input name="returnDate" type="date" required />
+      </label>
+
+      <label>
+        Status
+        <select name="status" required>
+          <option>Reserved</option>
+          <option>Rented</option>
+        </select>
+      </label>
+
+      <label>
+        Insurance / deposit
+        <input name="insuranceAmount" type="number" min="0" step="50" required />
+      </label>
+
+      <label>
+        Payment method
+        <select name="paymentMethod" required>
+          <option>Cash</option>
+          <option>Card</option>
+          <option>Instapay</option>
+          <option>Wallet Payment</option>
+        </select>
+      </label>
+
+      <label>
+        Paid amount
+        <input name="paid" type="number" min="0" step="50" required />
+      </label>
+
+      <label>
+        Balance
+        <input name="balance" type="number" min="0" step="50" required />
+      </label>
+    </div>
+
+    <menu class="dialog-actions">
+      <button class="ghost-button" type="button" id="cancel-rental-dialog">Cancel</button>
+      <button class="primary-button" value="default">Save rental</button>
+    </menu>
+  </form>
+</dialog>
 
     <script src="./app.js"></script>
   </body>

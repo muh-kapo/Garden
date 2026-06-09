@@ -6,72 +6,102 @@ const seedState = {
       code: "TULIP-DR-0001",
       name: "Pearl bridal gown",
       category: "Wedding dress",
-      size: "M",
+      size: "Regular",
       color: "Ivory",
       status: "Available",
       location: "Rack A / Shelf 1",
       rentalPrice: 1800,
+      insuranceAmount: 1000,
+      isFirstRental: "Yes",
       salePrice: 7200,
+      fabricType: "Lace",
+      fabricSource: "Main supplier",
+      fabricMeters: 6,
       notes: "Excellent condition",
     },
     {
       code: "TULIP-DR-0002",
       name: "Rose lace gown",
       category: "Wedding dress",
-      size: "S",
+      size: "Regular",
       color: "White",
       status: "Rented",
       location: "Out with customer",
       rentalPrice: 2200,
+      insuranceAmount: 1200,
+      isFirstRental: "No",
       salePrice: 8400,
+      fabricType: "Lace",
+      fabricSource: "Main supplier",
+      fabricMeters: 7,
       notes: "Return check required",
     },
     {
       code: "TULIP-EV-0003",
       name: "Emerald evening dress",
       category: "Evening dress",
-      size: "L",
+      size: "Regular",
       color: "Green",
       status: "Reserved",
       location: "Rack C / Shelf 2",
       rentalPrice: 900,
+      insuranceAmount: 500,
+      isFirstRental: "Yes",
       salePrice: 3100,
+      fabricType: "Satin",
+      fabricSource: "Fabric market",
+      fabricMeters: 4.5,
       notes: "Reserved for weekend",
     },
     {
       code: "TULIP-AC-0004",
       name: "Crystal veil",
       category: "Veil",
-      size: "One size",
+      size: "Regular",
       color: "Ivory",
       status: "Cleaning",
       location: "Cleaning queue",
       rentalPrice: 250,
+      insuranceAmount: 150,
+      isFirstRental: "No",
       salePrice: 950,
+      fabricType: "Tulle",
+      fabricSource: "Accessories supplier",
+      fabricMeters: 2,
       notes: "Minor makeup mark",
     },
     {
       code: "TULIP-DR-0005",
       name: "Satin fitted gown",
       category: "Wedding dress",
-      size: "M",
+      size: "Curvy",
       color: "Champagne",
       status: "Alteration",
       location: "Tailor desk",
       rentalPrice: 1900,
+      insuranceAmount: 1000,
+      isFirstRental: "Yes",
       salePrice: 6900,
+      fabricType: "Satin",
+      fabricSource: "Main supplier",
+      fabricMeters: 6.5,
       notes: "Hem adjustment",
     },
     {
       code: "TULIP-DR-0006",
       name: "Classic ball gown",
       category: "Wedding dress",
-      size: "XL",
+      size: "Overweight",
       color: "Ivory",
       status: "Sold",
       location: "Sold stock",
       rentalPrice: 2400,
+      insuranceAmount: 1300,
+      isFirstRental: "No",
       salePrice: 9300,
+      fabricType: "Organza",
+      fabricSource: "Main supplier",
+      fabricMeters: 8,
       notes: "Sold on June 6",
     },
   ],
@@ -103,6 +133,8 @@ const seedState = {
       pickup: "2026-06-06",
       returnDate: "2026-06-07",
       status: "Rented",
+      insuranceAmount: 1200,
+      paymentMethod: "Cash",
       paid: 1500,
       balance: 700,
     },
@@ -113,34 +145,56 @@ const seedState = {
       pickup: "2026-06-13",
       returnDate: "2026-06-15",
       status: "Reserved",
+      insuranceAmount: 500,
+      paymentMethod: "Card",
       paid: 300,
       balance: 600,
     },
   ],
   sales: [
-    {
-      customer: "Aisha N.",
-      itemCode: "TULIP-DR-0006",
-      itemName: "Classic ball gown",
-      date: "2026-06-06",
-      status: "Paid",
-      paid: 9300,
-      balance: 0,
-    },
-    {
-      customer: "Mariam K.",
-      itemCode: "TULIP-AC-0004",
-      itemName: "Crystal hair pins",
-      date: "2026-06-07",
-      status: "Partial",
-      paid: 250,
-      balance: 150,
-    },
-  ],
+  {
+    customer: "Aisha N.",
+    itemCode: "TULIP-DR-0006",
+    itemName: "Classic ball gown",
+    date: "2026-06-06",
+    status: "Paid",
+    paymentMethod: "Card",
+    accessories: "Veil, crystal belt",
+    paid: 9300,
+    balance: 0,
+  },
+  {
+    customer: "Mariam K.",
+    itemCode: "TULIP-AC-0004",
+    itemName: "Crystal hair pins",
+    date: "2026-06-07",
+    status: "Partial",
+    paymentMethod: "Cash",
+    accessories: "Hair pins",
+    paid: 250,
+    balance: 150,
+  },
+],
   expenses: [
-    { label: "Cleaning service", amount: 320, date: "2026-06-07" },
-    { label: "Alteration supplies", amount: 180, date: "2026-06-06" },
-  ],
+  {
+    category: "Cleaning",
+    label: "Cleaning service",
+    amount: 320,
+    date: "2026-06-07",
+  },
+  {
+    category: "Tailoring",
+    label: "Alteration supplies",
+    amount: 180,
+    date: "2026-06-06",
+  },
+  {
+    category: "Fabric",
+    label: "Lace fabric purchase",
+    amount: 950,
+    date: "2026-06-05",
+  },
+],
   tasks: [
     {
       title: "Check Rose lace gown return condition",
@@ -168,29 +222,39 @@ const seedState = {
     },
   ],
   buyingNeeds: [
-    {
-      need: "Ivory veils",
-      reason: "High rental demand with bridal gowns",
-      priority: "High",
-      estimate: 1800,
-      status: "Needed",
-    },
-    {
-      need: "Plus size bridal gowns",
-      reason: "Few XL choices available",
-      priority: "High",
-      estimate: 14000,
-      status: "Needed",
-    },
-    {
-      need: "Green evening dresses",
-      reason: "Popular color this month",
-      priority: "Medium",
-      estimate: 4500,
-      status: "Researching",
-    },
-  ],
+  {
+    need: "Ivory veils",
+    quantity: 6,
+    reason: "High rental demand with bridal gowns",
+    priority: "High",
+    estimate: 1800,
+    responsiblePerson: "Manager",
+    purchaseStatus: "Needed",
+    purchaseDate: "",
+  },
+  {
+    need: "Plus size bridal gowns",
+    quantity: 3,
+    reason: "Few Overweight choices available",
+    priority: "High",
+    estimate: 14000,
+    responsiblePerson: "Owner",
+    purchaseStatus: "Researching",
+    purchaseDate: "",
+  },
+  {
+    need: "Green evening dresses",
+    quantity: 4,
+    reason: "Popular color this month",
+    priority: "Medium",
+    estimate: 4500,
+    responsiblePerson: "Sales staff",
+    purchaseStatus: "Ordered",
+    purchaseDate: "2026-06-10",
+  },
+],
 };
+    
 
 let state = loadState();
 
@@ -326,30 +390,45 @@ function renderInventory() {
   const statusFilter = document.querySelector("#inventory-status-filter").value;
 
   const filtered = state.items.filter((item) => {
-    const matchesSearch = [item.code, item.name, item.size, item.color, item.location, item.category]
-      .join(" ")
-      .toLowerCase()
-      .includes(search);
+   const matchesSearch = [
+  item.code,
+  item.name,
+  item.size,
+  item.color,
+  item.location,
+  item.category,
+  item.fabricType,
+  item.fabricSource,
+]
+  .join(" ")
+  .toLowerCase()
+  .includes(search);
     const matchesStatus = statusFilter === "all" || item.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   document.querySelector("#inventory-table").innerHTML = filtered
-    .map(
-      (item) => `
-        <tr>
-          <td><strong>${item.code}</strong></td>
-          <td>${item.name}<br /><span class="item-meta">${item.category}</span></td>
-          <td>${item.size}</td>
-          <td>${item.color}</td>
-          <td>${badge(item.status)}</td>
-          <td>${item.location}</td>
-          <td>${formatMoney(item.rentalPrice)}</td>
-          <td>${formatMoney(item.salePrice)}</td>
-        </tr>
-      `,
-    )
-    .join("");
+  .map(
+    (item) => `
+      <tr>
+        <td><strong>${item.code}</strong></td>
+        <td>${item.name}<br /><span class="item-meta">${item.category}</span></td>
+        <td>${item.size}</td>
+        <td>${item.color}</td>
+        <td>${badge(item.status)}</td>
+        <td>${item.location}</td>
+        <td>${formatMoney(item.rentalPrice)}</td>
+        <td>${formatMoney(item.insuranceAmount || 0)}</td>
+        <td>${item.isFirstRental || "-"}</td>
+        <td>
+          ${item.fabricType || "-"}<br />
+          <span class="item-meta">${item.fabricSource || "-"} / ${item.fabricMeters || 0}m</span>
+        </td>
+        <td>${formatMoney(item.salePrice)}</td>
+      </tr>
+    `,
+  )
+  .join("");
 }
 
 function renderRentals() {
@@ -362,8 +441,10 @@ function renderRentals() {
           <td>${rental.pickup}</td>
           <td>${rental.returnDate}</td>
           <td>${badge(rental.status)}</td>
-          <td>${formatMoney(rental.paid)}</td>
-          <td>${formatMoney(rental.balance)}</td>
+<td>${formatMoney(rental.insuranceAmount || 0)}</td>
+<td>${rental.paymentMethod || "-"}</td>
+<td>${formatMoney(rental.paid)}</td>
+<td>${formatMoney(rental.balance)}</td>
         </tr>
       `,
     )
@@ -379,8 +460,10 @@ function renderSales() {
           <td>${sale.itemName}<br /><span class="item-meta">${sale.itemCode}</span></td>
           <td>${sale.date}</td>
           <td>${badge(sale.status)}</td>
-          <td>${formatMoney(sale.paid)}</td>
-          <td>${formatMoney(sale.balance)}</td>
+<td>${sale.paymentMethod || "-"}</td>
+<td>${sale.accessories || "-"}</td>
+<td>${formatMoney(sale.paid)}</td>
+<td>${formatMoney(sale.balance)}</td>
         </tr>
       `,
     )
@@ -404,12 +487,27 @@ function renderCustomers() {
 
 function renderAccounting() {
   const rentalIncome = state.rentals.reduce((sum, rental) => sum + rental.paid, 0);
-  const salesIncome = state.sales.reduce((sum, sale) => sum + sale.paid, 0);
-  const expenses = state.expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const openBalances = [...state.rentals, ...state.sales].reduce(
-    (sum, record) => sum + record.balance,
-    0,
-  );
+const salesIncome = state.sales.reduce((sum, sale) => sum + sale.paid, 0);
+const expenses = state.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+const openBalances = [...state.rentals, ...state.sales].reduce(
+  (sum, record) => sum + record.balance,
+  0,
+);
+const depositsHeld = state.rentals.reduce(
+  (sum, rental) => sum + (rental.insuranceAmount || 0),
+  0,
+);
+const netProfit = rentalIncome + salesIncome - expenses;
+
+const rentalCounts = state.rentals.reduce((counts, rental) => {
+  counts[rental.itemName] = (counts[rental.itemName] || 0) + 1;
+  return counts;
+}, {});
+
+const mostRented = Object.entries(rentalCounts)
+  .sort((a, b) => b[1] - a[1])
+  .map(([itemName, count]) => `${itemName} (${count})`)
+  .join(", ");
 
   const reports = [
     { label: "Rental income", value: formatMoney(rentalIncome), note: "Paid rental amounts" },
@@ -417,10 +515,20 @@ function renderAccounting() {
     { label: "Expenses", value: formatMoney(expenses), note: "Cleaning and supplies" },
     { label: "Open balances", value: formatMoney(openBalances), note: "Customer money still due" },
     {
-      label: "Demo cash position",
-      value: formatMoney(rentalIncome + salesIncome - expenses),
-      note: "Prototype calculation",
-    },
+  label: "Net profit",
+  value: formatMoney(netProfit),
+  note: "Rental income + sales income - expenses",
+},
+{
+  label: "Deposits held",
+  value: formatMoney(depositsHeld),
+  note: "Customer insurance/deposit amounts",
+},
+{
+  label: "Most rented dresses",
+  value: mostRented || "-",
+  note: "Based on rental records",
+},
   ];
 
   document.querySelector("#accounting-grid").innerHTML = reports
@@ -466,12 +574,15 @@ function renderBuying() {
     .map(
       (need) => `
         <tr>
-          <td><strong>${need.need}</strong></td>
-          <td>${need.reason}</td>
-          <td>${badge(need.priority, "priority")}</td>
-          <td>${formatMoney(need.estimate)}</td>
-          <td>${need.status}</td>
-        </tr>
+  <td><strong>${need.need}</strong></td>
+  <td>${need.quantity || 0}</td>
+  <td>${need.reason}</td>
+  <td>${badge(need.priority, "priority")}</td>
+  <td>${formatMoney(need.estimate)}</td>
+  <td>${need.responsiblePerson || "-"}</td>
+  <td>${need.purchaseStatus || "-"}</td>
+  <td>${need.purchaseDate || "-"}</td>
+</tr>
       `,
     )
     .join("");
@@ -515,6 +626,40 @@ function nextItemCode(category) {
   return `TULIP-${categoryCode}-${String(nextNumber).padStart(4, "0")}`;
 }
 
+function populateRentalFormOptions() {
+  const customerSelect = document.querySelector("#rental-customer");
+  const itemSelect = document.querySelector("#rental-item");
+
+  customerSelect.innerHTML = state.customers
+    .map((customer) => `<option value="${customer.name}">${customer.name}</option>`)
+    .join("");
+
+  itemSelect.innerHTML = state.items
+    .filter((item) => item.status === "Available" || item.status === "Reserved")
+    .map(
+      (item) =>
+        `<option value="${item.code}">${item.code} / ${item.name} / ${formatMoney(
+          item.rentalPrice,
+        )}</option>`,
+    )
+    .join("");
+}
+
+function updateRentalAmountsFromSelectedItem() {
+  const itemCode = document.querySelector("#rental-item").value;
+  const item = state.items.find((stockItem) => stockItem.code === itemCode);
+
+  if (!item) return;
+
+  const insuranceInput = document.querySelector("#rental-form [name='insuranceAmount']");
+  const paidInput = document.querySelector("#rental-form [name='paid']");
+  const balanceInput = document.querySelector("#rental-form [name='balance']");
+
+  insuranceInput.value = item.insuranceAmount || 0;
+  paidInput.value = 0;
+  balanceInput.value = item.rentalPrice || 0;
+}
+
 function setupEvents() {
   document.querySelectorAll(".nav-item").forEach((button) => {
     button.addEventListener("click", () => setView(button.dataset.view));
@@ -524,25 +669,39 @@ function setupEvents() {
   document.querySelector("#inventory-status-filter").addEventListener("change", renderInventory);
 
   const dialog = document.querySelector("#item-dialog");
-  document.querySelector("#quick-action-button").addEventListener("click", () => dialog.showModal());
 
-  document.querySelector("#item-form").addEventListener("submit", (event) => {
-    event.preventDefault();
+document.querySelector("#close-item-dialog").addEventListener("click", () => {
+  dialog.close();
+});
+
+document.querySelector("#cancel-item-dialog").addEventListener("click", () => {
+  dialog.close();
+});
+
+document.querySelector("#quick-action-button").addEventListener("click", () => dialog.showModal());
+
+document.querySelector("#item-form").addEventListener("submit", (event) => {
+  event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const category = formData.get("category");
 
     const item = {
-      code: nextItemCode(category),
-      name: formData.get("name"),
-      category,
-      size: formData.get("size"),
-      color: formData.get("color"),
-      location: formData.get("location"),
-      status: formData.get("status"),
-      rentalPrice: Number(formData.get("rentalPrice")),
-      salePrice: Number(formData.get("salePrice")),
-      notes: formData.get("notes"),
-    };
+  code: nextItemCode(category),
+  name: formData.get("name"),
+  category,
+  size: formData.get("size"),
+  color: formData.get("color"),
+  location: formData.get("location"),
+  status: formData.get("status"),
+  rentalPrice: Number(formData.get("rentalPrice")),
+  insuranceAmount: Number(formData.get("insuranceAmount")),
+  isFirstRental: formData.get("isFirstRental"),
+  salePrice: Number(formData.get("salePrice")),
+  fabricType: formData.get("fabricType"),
+  fabricSource: formData.get("fabricSource"),
+  fabricMeters: Number(formData.get("fabricMeters")),
+  notes: formData.get("notes"),
+};
 
     state.items.unshift(item);
     saveState();
@@ -560,5 +719,58 @@ function setupEvents() {
   });
 }
 
+const rentalDialog = document.querySelector("#rental-dialog");
+
+document.querySelector("#add-rental-button").addEventListener("click", () => {
+  populateRentalFormOptions();
+  updateRentalAmountsFromSelectedItem();
+  rentalDialog.showModal();
+});
+
+document.querySelector("#close-rental-dialog").addEventListener("click", () => {
+  rentalDialog.close();
+});
+
+document.querySelector("#cancel-rental-dialog").addEventListener("click", () => {
+  rentalDialog.close();
+});
+
+document.querySelector("#rental-item").addEventListener("change", updateRentalAmountsFromSelectedItem);
+
+document.querySelector("#rental-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(event.currentTarget);
+  const itemCode = formData.get("itemCode");
+  const item = state.items.find((stockItem) => stockItem.code === itemCode);
+
+  if (!item) return;
+
+  const rental = {
+    customer: formData.get("customer"),
+    itemCode,
+    itemName: item.name,
+    pickup: formData.get("pickup"),
+    returnDate: formData.get("returnDate"),
+    status: formData.get("status"),
+    insuranceAmount: Number(formData.get("insuranceAmount")),
+    paymentMethod: formData.get("paymentMethod"),
+    paid: Number(formData.get("paid")),
+    balance: Number(formData.get("balance")),
+  };
+
+  state.rentals.unshift(rental);
+  item.status = rental.status;
+  item.location = rental.status === "Rented" ? "Out with customer" : item.location;
+
+  saveState();
+  renderAll();
+  event.currentTarget.reset();
+  rentalDialog.close();
+  setView("rentals");
+});
+
 setupEvents();
+
+
 renderAll();
