@@ -10,11 +10,7 @@
     <div class="app-shell">
       <aside class="sidebar" aria-label="Garden navigation">
         <div class="brand">
-          <span class="brand-mark">G</span>
-          <div>
-            <strong>Garden</strong>
-            <span>Tulip daily system</span>
-          </div>
+          <span class="brand-text">tulip</span>
         </div>
 
         <label class="role-switcher">
@@ -27,15 +23,46 @@
         </label>
 
         <nav class="nav-list" aria-label="Primary">
-          <button class="nav-item is-active" data-view="dashboard" data-owner-only="true">Dashboard</button>
-          <button class="nav-item" data-view="inventory">Inventory</button>
-          <button class="nav-item" data-view="rentals">Rentals</button>
-          <button class="nav-item" data-view="sales">Sales</button>
-          <button class="nav-item" data-view="customers">Customers</button>
-          <button class="nav-item" data-view="accounting" data-owner-only="true">Accounting</button>
-          <button class="nav-item" data-view="tasks">Staff tasks</button>
-          <button class="nav-item" data-view="buying">Buying list</button>
-        </nav>
+  <button class="nav-item is-active" data-view="dashboard">
+    <span class="nav-icon">⌂</span>
+    <span class="nav-label">Dashboard</span>
+  </button>
+
+  <button class="nav-item" data-view="inventory">
+    <span class="nav-icon">▦</span>
+    <span class="nav-label">Inventory</span>
+  </button>
+
+  <button class="nav-item" data-view="rentals">
+    <span class="nav-icon">↺</span>
+    <span class="nav-label">Rentals</span>
+  </button>
+
+  <button class="nav-item" data-view="sales">
+    <span class="nav-icon">◆</span>
+    <span class="nav-label">Sales</span>
+  </button>
+
+  <button class="nav-item" data-view="customers">
+    <span class="nav-icon">○</span>
+    <span class="nav-label">Customers</span>
+  </button>
+
+  <button class="nav-item" data-view="accounting">
+    <span class="nav-icon">◍</span>
+    <span class="nav-label">Accounting</span>
+  </button>
+
+  <button class="nav-item" data-view="tasks">
+    <span class="nav-icon">✓</span>
+    <span class="nav-label">Tasks</span>
+  </button>
+
+  <button class="nav-item" data-view="buying">
+    <span class="nav-icon">＋</span>
+    <span class="nav-label">Buying</span>
+  </button>
+</nav>
       </aside>
 
       <main class="workspace">
@@ -50,26 +77,56 @@
           </div>
         </header>
 
-        <section class="status-strip" aria-label="Daily summary">
-          <article>
-            <span>Available</span>
-            <strong id="available-count">0</strong>
-          </article>
-          <article>
-            <span>Rented now</span>
-            <strong id="rented-count">0</strong>
-          </article>
-          <article>
-            <span>Today returns</span>
-            <strong id="returns-count">0</strong>
-          </article>
-          <article data-profit-card>
-            <span>Net profit</span>
-            <strong id="net-profit">EGP 0</strong>
-          </article>
-        </section>
-
         <section class="view is-active" id="dashboard-view" data-view-panel="dashboard" data-owner-only="true">
+          <section class="welcome-panel" aria-label="Tulip dashboard welcome">
+            <div class="welcome-copy">
+              <p class="eyebrow">Daily store command center</p>
+              <h2>Welcome to Tulip</h2>
+              <p>
+                Monitor rentals, sales, stock movement, customer follow-ups, and team tasks from one polished workspace.
+              </p>
+            </div>
+
+            <div class="welcome-visual" aria-hidden="true">
+              <div class="brand-orbit">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="welcome-badge">
+                <strong>Live</strong>
+                <span>Demo data</span>
+              </div>
+            </div>
+          </section>
+
+          <div class="dashboard-section-title">
+            <div>
+              <span class="section-kicker">Today overview</span>
+              <h2>Key operating signals</h2>
+            </div>
+            <span class="section-pill">Sage / Beige view</span>
+          </div>
+
+          <section class="status-strip" aria-label="Daily summary">
+            <article>
+              <span>Available</span>
+              <strong id="available-count">0</strong>
+            </article>
+            <article>
+              <span>Rented now</span>
+              <strong id="rented-count">0</strong>
+            </article>
+            <article>
+              <span>Today returns</span>
+              <strong id="returns-count">0</strong>
+            </article>
+            <article data-profit-card>
+              <span>Net profit</span>
+              <strong id="net-profit">EGP 0</strong>
+            </article>
+          </section>
+
           <div class="tool-row dashboard-filter">
             <label>
               Analysis date
@@ -82,6 +139,69 @@
           </div>
 
           <div class="report-grid" id="analytics-grid"></div>
+
+          <section class="dashboard-widgets" aria-label="Dashboard visual summaries">
+            <article class="chart-card revenue-card">
+              <div class="card-header">
+                <div>
+                  <span class="section-kicker">Revenue forecast</span>
+                  <h2>Monthly performance</h2>
+                </div>
+                <span class="card-icon">◒</span>
+              </div>
+              <div class="bar-chart" aria-hidden="true">
+                <span style="--h: 48%"></span>
+                <span style="--h: 74%"></span>
+                <span style="--h: 58%"></span>
+                <span style="--h: 86%"></span>
+                <span style="--h: 64%"></span>
+                <span style="--h: 78%"></span>
+                <span style="--h: 70%"></span>
+              </div>
+              <div class="metric-row">
+                <span><strong>EGP 96.6K</strong> Rental value</span>
+                <span><strong>EGP 48.8K</strong> Profit</span>
+                <span><strong>24</strong> Bookings</span>
+              </div>
+            </article>
+
+            <article class="chart-card health-card">
+              <div class="card-header">
+                <div>
+                  <span class="section-kicker">Stock health</span>
+                  <h2>Availability mix</h2>
+                </div>
+                <span class="card-icon">◌</span>
+              </div>
+              <div class="donut-wrap">
+                <div class="donut-chart" aria-hidden="true"></div>
+                <div>
+                  <strong>72%</strong>
+                  <span>Ready stock</span>
+                </div>
+              </div>
+              <div class="legend-list">
+                <span><i></i>Available</span>
+                <span><i></i>Reserved</span>
+                <span><i></i>Cleaning</span>
+              </div>
+            </article>
+
+            <article class="chart-card task-card-rich">
+              <div class="card-header">
+                <div>
+                  <span class="section-kicker">Team rhythm</span>
+                  <h2>Task flow</h2>
+                </div>
+                <span class="card-icon">✓</span>
+              </div>
+              <div class="progress-list">
+                <label><span>Fittings</span><strong>82%</strong><i style="--p: 82%"></i></label>
+                <label><span>Returns</span><strong>64%</strong><i style="--p: 64%"></i></label>
+                <label><span>Follow-ups</span><strong>74%</strong><i style="--p: 74%"></i></label>
+              </div>
+            </article>
+          </section>
 
           <div class="split-layout">
             <section class="panel wide-panel">
