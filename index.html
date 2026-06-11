@@ -17,13 +17,22 @@
           </div>
         </div>
 
+        <label class="role-switcher">
+          Access level
+          <select id="role-select">
+            <option value="Owner">Owner</option>
+            <option value="Admin">Admin</option>
+            <option value="Employee">Employee</option>
+          </select>
+        </label>
+
         <nav class="nav-list" aria-label="Primary">
-          <button class="nav-item is-active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item is-active" data-view="dashboard" data-owner-only="true">Dashboard</button>
           <button class="nav-item" data-view="inventory">Inventory</button>
           <button class="nav-item" data-view="rentals">Rentals</button>
           <button class="nav-item" data-view="sales">Sales</button>
           <button class="nav-item" data-view="customers">Customers</button>
-          <button class="nav-item" data-view="accounting">Accounting</button>
+          <button class="nav-item" data-view="accounting" data-owner-only="true">Accounting</button>
           <button class="nav-item" data-view="tasks">Staff tasks</button>
           <button class="nav-item" data-view="buying">Buying list</button>
         </nav>
@@ -54,32 +63,45 @@
             <span>Today returns</span>
             <strong id="returns-count">0</strong>
           </article>
-          <article>
-            <span>Pending balance</span>
-            <strong id="pending-balance">AED 0</strong>
+          <article data-profit-card>
+            <span>Net profit</span>
+            <strong id="net-profit">EGP 0</strong>
           </article>
         </section>
 
-        <section class="view is-active" id="dashboard-view" data-view-panel="dashboard">
+        <section class="view is-active" id="dashboard-view" data-view-panel="dashboard" data-owner-only="true">
+          <div class="tool-row dashboard-filter">
+            <label>
+              Analysis date
+              <input id="analysis-date" type="date" />
+            </label>
+            <label>
+              Analysis month
+              <input id="analysis-month" type="month" />
+            </label>
+          </div>
+
+          <div class="report-grid" id="analytics-grid"></div>
+
           <div class="split-layout">
             <section class="panel wide-panel">
               <div class="section-heading">
                 <div>
-                  <h2>Today at Tulip</h2>
-                  <p>Operational work that needs attention today.</p>
+                  <h2>Rental calendar</h2>
+                  <p>Dresses rented or reserved on the selected month.</p>
                 </div>
               </div>
-              <div class="timeline" id="today-timeline"></div>
+              <div class="calendar-grid" id="rental-calendar"></div>
             </section>
 
             <section class="panel">
               <div class="section-heading">
                 <div>
-                  <h2>Stock health</h2>
-                  <p>Items that may block rentals or sales.</p>
+                  <h2>Top expenses</h2>
+                  <p>Highest costs in the selected month.</p>
                 </div>
               </div>
-              <div class="compact-list" id="stock-health-list"></div>
+              <div class="compact-list" id="top-expenses-list"></div>
             </section>
           </div>
 
@@ -87,7 +109,7 @@
             <div class="section-heading">
               <div>
                 <h2>Recent activity</h2>
-                <p>Latest stock, rental, sale, and payment movement.</p>
+                <p>Latest stock, rental, sale, customer, and task movement.</p>
               </div>
             </div>
             <div class="activity-grid" id="activity-grid"></div>
@@ -97,20 +119,20 @@
         <section class="view" id="inventory-view" data-view-panel="inventory">
           <div class="tool-row">
             <label class="search-box">
-              <span>Search inventory</span>
-              <input id="inventory-search" type="search" placeholder="Code, name, color, size, location, fabric" />
+              Search inventory
+              <input id="inventory-search" type="search" placeholder="Code, description, color, size, source" />
             </label>
-            <label class="filter-box">
-              <span>Status</span>
+            <label>
+              Status
               <select id="inventory-status-filter">
                 <option value="all">All statuses</option>
-                <option value="Available">Available</option>
-                <option value="Reserved">Reserved</option>
-                <option value="Rented">Rented</option>
-                <option value="Sold">Sold</option>
-                <option value="Cleaning">Cleaning</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Alteration">Alteration</option>
+                <option>Available</option>
+                <option>Reserved</option>
+                <option>Rented</option>
+                <option>Sold</option>
+                <option>Cleaning</option>
+                <option>Damaged</option>
+                <option>Alteration</option>
               </select>
             </label>
           </div>
@@ -118,19 +140,16 @@
             <table>
               <thead>
                 <tr>
-                <tr>
-                <th>Code</th>
-                <th>Item</th>
-                <th>Size</th>
-                <th>Color</th>
-                <th>Status</th>
-                <th>Location</th>
-                <th>Rental</th>
-                <th>Insurance</th>
-                <th>First rental</th>
-                <th>Fabric</th>
-                <th>Sale</th>
-                </tr>
+                  <th>Item code</th>
+                  <th>Description</th>
+                  <th>Size</th>
+                  <th>Color</th>
+                  <th>Status</th>
+                  <th>Rent count</th>
+                  <th>Location</th>
+                  <th>Rental</th>
+                  <th>Fabric</th>
+                  <th>Sale</th>
                 </tr>
               </thead>
               <tbody id="inventory-table"></tbody>
@@ -139,23 +158,23 @@
         </section>
 
         <section class="view" id="rentals-view" data-view-panel="rentals">
-          <div class="tool-row">
-  <button class="primary-button" id="add-rental-button">Add rental</button>
-</div>
+          <div class="tool-row single-action">
+            <button class="primary-button" id="add-rental-button">Add rental</button>
+          </div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-  <th>Customer</th>
-  <th>Item</th>
-  <th>Pickup</th>
-  <th>Return</th>
-  <th>Status</th>
-  <th>Insurance</th>
-  <th>Payment method</th>
-  <th>Paid</th>
-  <th>Balance</th>
-</tr>
+                  <th>Customer</th>
+                  <th>Item</th>
+                  <th>Pickup</th>
+                  <th>Return</th>
+                  <th>Status</th>
+                  <th>Insurance</th>
+                  <th>Payment</th>
+                  <th>Paid</th>
+                  <th>Balance</th>
+                </tr>
               </thead>
               <tbody id="rentals-table"></tbody>
             </table>
@@ -163,18 +182,20 @@
         </section>
 
         <section class="view" id="sales-view" data-view-panel="sales">
+          <div class="tool-row single-action">
+            <button class="primary-button" id="add-sale-button">Add sale</button>
+          </div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
                   <th>Customer</th>
-<th>Item</th>
-<th>Date</th>
-<th>Status</th>
-<th>Payment Method</th>
-<th>Accessories</th>
-<th>Paid</th>
-<th>Balance</th>
+                  <th>Item</th>
+                  <th>Date</th>
+                  <th>Base price</th>
+                  <th>Paid</th>
+                  <th>Profit</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody id="sales-table"></tbody>
@@ -183,14 +204,20 @@
         </section>
 
         <section class="view" id="customers-view" data-view-panel="customers">
+          <div class="tool-row single-action">
+            <button class="primary-button" id="add-customer-button">Add customer</button>
+          </div>
           <div class="directory-grid" id="customer-grid"></div>
         </section>
 
-        <section class="view" id="accounting-view" data-view-panel="accounting">
+        <section class="view" id="accounting-view" data-view-panel="accounting" data-owner-only="true">
           <div class="report-grid" id="accounting-grid"></div>
         </section>
 
         <section class="view" id="tasks-view" data-view-panel="tasks">
+          <div class="tool-row single-action">
+            <button class="primary-button" id="add-task-button">Add task</button>
+          </div>
           <div class="kanban" id="task-board"></div>
         </section>
 
@@ -199,16 +226,14 @@
             <table>
               <thead>
                 <tr>
-                  <tr>
-  <th>Need</th>
-  <th>Quantity</th>
-  <th>Reason</th>
-  <th>Priority</th>
-  <th>Estimate</th>
-  <th>Responsible</th>
-  <th>Purchase status</th>
-  <th>Purchase date</th>
-</tr>
+                  <th>Need</th>
+                  <th>Quantity</th>
+                  <th>Reason</th>
+                  <th>Priority</th>
+                  <th>Estimate</th>
+                  <th>Responsible</th>
+                  <th>Status</th>
+                  <th>Purchase date</th>
                 </tr>
               </thead>
               <tbody id="buying-table"></tbody>
@@ -225,39 +250,59 @@
             <p class="eyebrow">Inventory</p>
             <h2 id="item-dialog-title">Add stock item</h2>
           </div>
-          <button class="icon-button" type="button" id="close-item-dialog" aria-label="Close dialog">x</button>
+          <button class="icon-button" type="button" data-close-dialog="item-dialog" aria-label="Close">x</button>
         </div>
 
         <div class="form-grid">
           <label>
-            Item name
-            <input name="name" required placeholder="Pearl bridal gown" />
+            Item code
+            <input name="code" required placeholder="DR-RG-WH-LC-0007" />
+          </label>
+          <label>
+            Description
+            <input name="description" readonly placeholder="Auto-generated from code fields" />
           </label>
           <label>
             Category
-            <select name="category" required>
-              <option>Wedding dress</option>
-              <option>Evening dress</option>
-              <option>Accessory</option>
-              <option>Veil</option>
-              <option>Shoes</option>
+            <select name="category" required data-code-part>
+              <option value="DR">Wedding dress</option>
+              <option value="EV">Evening dress</option>
+              <option value="AC">Accessory</option>
+              <option value="VL">Veil</option>
+              <option value="SH">Shoes</option>
             </select>
           </label>
           <label>
-           Size
-           <select name="size" required>
-            <option>Regular</option>
-            <option>Curvy</option>
-            <option>Overweight</option>
-           </select>
+            Size
+            <select name="size" required data-code-part>
+              <option value="RG">Regular</option>
+              <option value="CV">Curvey</option>
+              <option value="OW">Overweight</option>
+            </select>
           </label>
           <label>
             Color
-            <input name="color" required placeholder="Ivory" />
+            <select name="colorCode" required data-code-part></select>
+          </label>
+          <label>
+            Fabric
+            <select name="fabricType" required data-code-part></select>
+          </label>
+          <label>
+            Fabric source / place
+            <select name="fabricSource" required></select>
           </label>
           <label>
             Storage location
-            <input name="location" required placeholder="Rack A / Shelf 2" />
+            <select name="location" required>
+              <option>Rack A / Shelf 1</option>
+              <option>Rack A / Shelf 2</option>
+              <option>Rack B / Shelf 1</option>
+              <option>Rack C / Shelf 2</option>
+              <option>Tailor desk</option>
+              <option>Cleaning queue</option>
+              <option>Sold stock</option>
+            </select>
           </label>
           <label>
             Status
@@ -272,34 +317,27 @@
           </label>
           <label>
             Rental price
-            <input name="rentalPrice" type="number" min="0" step="50" required placeholder="1800" />
+            <input name="rentalPrice" type="number" min="0" step="50" required placeholder="18000" />
           </label>
           <label>
-  Insurance / deposit
-  <input name="insuranceAmount" type="number" min="0" step="50" required placeholder="1000" />
-</label>
-<label>
-  First rental
-  <select name="isFirstRental" required>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
-</label>
-<label>
-  Fabric type
-  <input name="fabricType" required placeholder="Satin, lace, tulle" />
-</label>
-<label>
-  Fabric place / source
-  <input name="fabricSource" required placeholder="Shop, supplier, storage room" />
-</label>
-<label>
-  Fabric meters
-  <input name="fabricMeters" type="number" min="0" step="0.5" required placeholder="6" />
-</label>
+            Insurance / deposit
+            <input name="insuranceAmount" type="number" min="0" step="50" required placeholder="10000" />
+          </label>
+          <label>
+            Base cost
+            <input name="baseCost" type="number" min="0" step="50" required placeholder="35000" />
+          </label>
           <label>
             Sale price
-            <input name="salePrice" type="number" min="0" step="50" required placeholder="6500" />
+            <input name="salePrice" type="number" min="0" step="50" required placeholder="72000" />
+          </label>
+          <label>
+            Fabric meters
+            <input name="fabricMeters" type="number" min="0" step="0.5" required placeholder="6" />
+          </label>
+          <label>
+            Rent count
+            <input name="rentCount" type="number" min="0" step="1" required value="0" />
           </label>
         </div>
 
@@ -309,83 +347,114 @@
         </label>
 
         <menu class="dialog-actions">
-          <button class="ghost-button" type="button" id="cancel-item-dialog">Cancel</button>
+          <button class="ghost-button" type="button" data-close-dialog="item-dialog">Cancel</button>
           <button class="primary-button" value="default">Save item</button>
         </menu>
       </form>
     </dialog>
 
     <dialog id="rental-dialog" aria-labelledby="rental-dialog-title">
-  <form method="dialog" class="dialog-card" id="rental-form">
-    <div class="dialog-heading">
-      <div>
-        <p class="eyebrow">Rentals</p>
-        <h2 id="rental-dialog-title">Add rental</h2>
-      </div>
-      <button class="icon-button" type="button" id="close-rental-dialog" aria-label="Close dialog">x</button>
-    </div>
+      <form method="dialog" class="dialog-card" id="rental-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Rentals</p>
+            <h2 id="rental-dialog-title">Add rental</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog="rental-dialog" aria-label="Close">x</button>
+        </div>
+        <div class="form-grid">
+          <label>Customer <select name="customer" id="rental-customer" required></select></label>
+          <label>Item <select name="itemCode" id="rental-item" required></select></label>
+          <label>Pickup date <input name="pickup" type="date" required /></label>
+          <label>Return date <input name="returnDate" type="date" required /></label>
+          <label>Status <select name="status" required><option>Reserved</option><option>Rented</option></select></label>
+          <label>Insurance / deposit <input name="insuranceAmount" type="number" min="0" step="50" required /></label>
+          <label>Payment method <select name="paymentMethod" required><option>Cash</option><option>Card</option><option>Instapay</option><option>Wallet Payment</option></select></label>
+          <label>Paid amount <input name="paid" type="number" min="0" step="50" required /></label>
+          <label>Balance <input name="balance" type="number" min="0" step="50" required /></label>
+        </div>
+        <menu class="dialog-actions">
+          <button class="ghost-button" type="button" data-close-dialog="rental-dialog">Cancel</button>
+          <button class="primary-button" value="default">Save rental</button>
+        </menu>
+      </form>
+    </dialog>
 
-    <div class="form-grid">
-      <label>
-        Customer
-        <select name="customer" id="rental-customer" required></select>
-      </label>
+    <dialog id="sale-dialog" aria-labelledby="sale-dialog-title">
+      <form method="dialog" class="dialog-card" id="sale-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Sales</p>
+            <h2 id="sale-dialog-title">Add sale</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog="sale-dialog" aria-label="Close">x</button>
+        </div>
+        <div class="form-grid">
+          <label>Customer <select name="customer" id="sale-customer" required></select></label>
+          <label>Item <select name="itemCode" id="sale-item" required></select></label>
+          <label>Sale date <input name="date" type="date" required /></label>
+          <label>Base price <input name="basePrice" type="number" min="0" step="50" required /></label>
+          <label>Sale price <input name="salePrice" type="number" min="0" step="50" required /></label>
+          <label>Paid amount <input name="paid" type="number" min="0" step="50" required /></label>
+          <label>Customer profit <input name="profit" type="number" readonly /></label>
+          <label>Status <select name="status" required><option>Paid</option><option>Partial</option><option>Cancelled</option></select></label>
+          <label>Payment method <select name="paymentMethod" required><option>Cash</option><option>Card</option><option>Instapay</option><option>Wallet Payment</option></select></label>
+          <label>Sales person <input name="salesPerson" required placeholder="Sales staff" /></label>
+        </div>
+        <menu class="dialog-actions">
+          <button class="ghost-button" type="button" data-close-dialog="sale-dialog">Cancel</button>
+          <button class="primary-button" value="default">Save sale</button>
+        </menu>
+      </form>
+    </dialog>
 
-      <label>
-        Item
-        <select name="itemCode" id="rental-item" required></select>
-      </label>
+    <dialog id="customer-dialog" aria-labelledby="customer-dialog-title">
+      <form method="dialog" class="dialog-card" id="customer-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Customers</p>
+            <h2 id="customer-dialog-title">Add customer</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog="customer-dialog" aria-label="Close">x</button>
+        </div>
+        <div class="form-grid">
+          <label>Name <input name="name" required placeholder="Customer name" /></label>
+          <label>Phone number <input name="phone" required placeholder="+20 ..." /></label>
+          <label>Method <select name="method" required><option>Old customer</option><option>Instagram</option><option>Google</option><option>Location</option></select></label>
+          <label>Sales person <input name="salesPerson" required placeholder="Sales staff" /></label>
+          <label>Event date <input name="eventDate" type="date" /></label>
+        </div>
+        <label>Notes <textarea name="notes" rows="3" placeholder="Measurements, dress preference, follow-up notes"></textarea></label>
+        <menu class="dialog-actions">
+          <button class="ghost-button" type="button" data-close-dialog="customer-dialog">Cancel</button>
+          <button class="primary-button" value="default">Save customer</button>
+        </menu>
+      </form>
+    </dialog>
 
-      <label>
-        Pickup date
-        <input name="pickup" type="date" required />
-      </label>
-
-      <label>
-        Return date
-        <input name="returnDate" type="date" required />
-      </label>
-
-      <label>
-        Status
-        <select name="status" required>
-          <option>Reserved</option>
-          <option>Rented</option>
-        </select>
-      </label>
-
-      <label>
-        Insurance / deposit
-        <input name="insuranceAmount" type="number" min="0" step="50" required />
-      </label>
-
-      <label>
-        Payment method
-        <select name="paymentMethod" required>
-          <option>Cash</option>
-          <option>Card</option>
-          <option>Instapay</option>
-          <option>Wallet Payment</option>
-        </select>
-      </label>
-
-      <label>
-        Paid amount
-        <input name="paid" type="number" min="0" step="50" required />
-      </label>
-
-      <label>
-        Balance
-        <input name="balance" type="number" min="0" step="50" required />
-      </label>
-    </div>
-
-    <menu class="dialog-actions">
-      <button class="ghost-button" type="button" id="cancel-rental-dialog">Cancel</button>
-      <button class="primary-button" value="default">Save rental</button>
-    </menu>
-  </form>
-</dialog>
+    <dialog id="task-dialog" aria-labelledby="task-dialog-title">
+      <form method="dialog" class="dialog-card" id="task-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Staff tasks</p>
+            <h2 id="task-dialog-title">Add task</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog="task-dialog" aria-label="Close">x</button>
+        </div>
+        <div class="form-grid">
+          <label>Task type <select name="taskType" required></select></label>
+          <label>Assigned to <input name="owner" required placeholder="Sales staff, storage staff, tailor" /></label>
+          <label>Due date <input name="dueDate" type="date" required /></label>
+          <label>Status <select name="status" required><option>Today</option><option>Next</option><option>Done</option></select></label>
+          <label>Related item/customer <input name="linked" placeholder="Optional reference" /></label>
+        </div>
+        <label>Details <textarea name="details" rows="3" placeholder="Extra task details"></textarea></label>
+        <menu class="dialog-actions">
+          <button class="ghost-button" type="button" data-close-dialog="task-dialog">Cancel</button>
+          <button class="primary-button" value="default">Save task</button>
+        </menu>
+      </form>
+    </dialog>
 
     <script src="./app.js"></script>
   </body>
